@@ -1,12 +1,18 @@
 
 package cz.it4i.parallel.ui;
 
+import org.scijava.command.Command;
+import org.scijava.plugin.Plugin;
+
+import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-class RedirectedOutputScreenWindow {
+@Plugin(type = Command.class,
+	menuPath = "Plugins>Scijava parallel>Redirected Output Viewer")
+public class RedirectedOutputScreenWindow implements Command {
 
 	private Window owner;
 
@@ -28,5 +34,12 @@ class RedirectedOutputScreenWindow {
 		stage.initOwner(owner);
 
 		stage.showAndWait();
+	}
+
+	@Override
+	public void run() {
+		RedirectedOutputScreenWindow redirectedOutputScreenWindow =
+			new RedirectedOutputScreenWindow();
+		JavaFXRoutines.runOnFxThread(redirectedOutputScreenWindow::openWindow);
 	}
 }
