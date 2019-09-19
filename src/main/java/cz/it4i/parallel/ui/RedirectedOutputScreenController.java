@@ -17,4 +17,9 @@ public class RedirectedOutputScreenController extends AnchorPane {
 	public RedirectedOutputScreenController() {
 		JavaFXRoutines.initRootAndController("redirected-output-screen.fxml", this);
 	}
+
+	public void initialize() {
+		outputTextArea.setEditable(false);
+		errorTextArea.setEditable(false);
+	}
 }

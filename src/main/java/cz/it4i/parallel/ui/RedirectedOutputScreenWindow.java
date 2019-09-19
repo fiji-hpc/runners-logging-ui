@@ -33,6 +33,8 @@ public class RedirectedOutputScreenWindow implements Command {
 		stage.setScene(formScene);
 		stage.initOwner(owner);
 
+		controller.initialize();
+		
 		stage.showAndWait();
 	}
 
