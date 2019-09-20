@@ -1,10 +1,14 @@
 
 package cz.it4i.parallel.ui;
 
-import java.util.Arrays;
-
 public class RedirectedOutput {
 
+	// Type of stream:
+	public enum StreamType {
+	  OUTPUT,
+	  ERROR
+	}
+	
 	private RedirectedOutput() {
 		// Private constructor to hide the implicit public one.
 	}
@@ -13,8 +17,12 @@ public class RedirectedOutput {
 
 	private static String error = "Start of error redirection:\n";
 
-	public static void write(byte[] buffer) {
-		output += Arrays.toString(buffer);
+	public static void appendTo(StreamType streamType, byte[] buffer) {
+		if(streamType == StreamType.OUTPUT) {
+			output += new String(buffer)+"\n";
+		} else {
+			error += new String(buffer)+"\n";
+		}
 	}
 
 	public static String getOutput() {
