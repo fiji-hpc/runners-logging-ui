@@ -20,9 +20,12 @@ public class RedirectedOutputScreenController extends AnchorPane {
 
 	private ScheduledExecutorService executor;
 
+	private RedirectedOutput redirectedOutput;
+
 	public RedirectedOutputScreenController() {
 		JavaFXRoutines.initRootAndController("redirected-output-screen.fxml", this);
-		update();
+		redirectedOutput = new RedirectedOutput();
+		updateOutputAndErrorPeriodically();
 	}
 
 	public void initialize() {
@@ -30,12 +33,22 @@ public class RedirectedOutputScreenController extends AnchorPane {
 		errorTextArea.setEditable(false);
 	}
 
-	private void update() {
+	private void updateOutputAndErrorPeriodically() {
 		Runnable updateStandardOutputAndErrorsRunnable = () -> {
-			JavaFXRoutines.runOnFxThread(() -> outputTextArea.setText(RedirectedOutput
-				.getOutput()));
-			JavaFXRoutines.runOnFxThread(() -> errorTextArea.setText(RedirectedOutput
-				.getError()));
+			JavaFXRoutines.runOnFxThread(() -> {
+				// Append any new output:
+				String newOutput = redirectedOutput.getNewOutput();
+				if (!newOutput.equals("")) {
+					outputTextArea.appendText(newOutput);
+				}
+
+				// Append any new error:
+				String newError = redirectedOutput.getNewError();
+				if (!newError.equals("")) {
+					errorTextArea.appendText(newError);
+				}
+
+			});
 		};
 
 		executor = Executors.newScheduledThreadPool(1);
