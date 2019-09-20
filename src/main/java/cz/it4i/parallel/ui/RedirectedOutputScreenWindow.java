@@ -9,12 +9,17 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 @Plugin(type = Command.class,
 	menuPath = "Plugins>Scijava parallel>Redirected Output Viewer")
 public class RedirectedOutputScreenWindow implements Command {
 
-	private Window owner;
+	private Window owner = null;
+
+	private Stage stage;
+
+	private RedirectedOutputScreenController controller;
 
 	public void setOwner(Window parentWindow) {
 		this.owner = parentWindow;
@@ -22,19 +27,24 @@ public class RedirectedOutputScreenWindow implements Command {
 
 	public void openWindow() {
 		// Create controller:
-		RedirectedOutputScreenController controller =
-			new RedirectedOutputScreenController();
+		this.controller = new RedirectedOutputScreenController();
 
-		final Scene formScene = new Scene(controller);
-		final Stage stage = new Stage();
-		stage.initModality(Modality.APPLICATION_MODAL);
+		final Scene formScene = new Scene(this.controller);
+		stage = new Stage();
+		// This window should not be modal:
+
+		stage.initModality(Modality.NONE);
 		stage.setResizable(false);
 		stage.setTitle("Redirected Output");
 		stage.setScene(formScene);
 		stage.initOwner(owner);
 
-		controller.initialize();
-		
+		this.controller.initialize();
+
+		// Remember to stop the standard output and error update on closing the
+		// stage:
+		finalizeOnStageClose();
+
 		stage.showAndWait();
 	}
 
@@ -43,5 +53,11 @@ public class RedirectedOutputScreenWindow implements Command {
 		RedirectedOutputScreenWindow redirectedOutputScreenWindow =
 			new RedirectedOutputScreenWindow();
 		JavaFXRoutines.runOnFxThread(redirectedOutputScreenWindow::openWindow);
+	}
+
+	private void finalizeOnStageClose() {
+		// On close dispose executor:
+		this.stage.setOnCloseRequest((WindowEvent we) -> this.controller.close());
+
 	}
 }
