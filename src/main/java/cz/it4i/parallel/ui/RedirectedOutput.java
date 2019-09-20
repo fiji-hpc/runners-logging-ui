@@ -1,6 +1,7 @@
 
 package cz.it4i.parallel.ui;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 public class RedirectedOutput {
@@ -10,9 +11,9 @@ public class RedirectedOutput {
 			OUTPUT, ERROR
 	}
 
-	private static String output = "Start of output redirection:\n";
+	private static AtomicReference<String> output = new AtomicReference<>("Start of output redirection.\n");
 
-	private static String error = "Start of error redirection:\n";
+	private static AtomicReference<String> error = new AtomicReference<>("Start of error redirection.\n");
 
 	private String alreadyDisplayedOutput;
 
@@ -23,38 +24,40 @@ public class RedirectedOutput {
 		this.alreadyDisplayedError = "";
 	}
 
-	public synchronized static void appendTo(StreamType streamType, byte[] buffer) {
+	public static synchronized void appendTo(StreamType streamType,
+		byte[] buffer)
+	{
 		if (streamType == StreamType.OUTPUT) {
-			output += new String(buffer) + "\n";
+			output.set(output.get() + new String(buffer));
 		}
 		else {
-			error += new String(buffer) + "\n";
+			error.set(error.get() + new String(buffer));
 		}
 	}
 
 	// Get all output:
-	public synchronized static String getOutput() {
-		return output;
+	public static synchronized String getOutput() {
+		return output.get();
 	}
 
 	// Get all error:
-	public synchronized static String getError() {
-		return error;
+	public static synchronized String getError() {
+		return error.get();
 	}
 
 	public synchronized String getNewOutput() {
 		// Get only the new text that has not already been displayed:
-		String newOutput = output.replaceFirst(Pattern.quote(
+		String newOutput = output.get().replaceFirst(Pattern.quote(
 			this.alreadyDisplayedOutput), "");
-		this.alreadyDisplayedOutput = output;
+		this.alreadyDisplayedOutput = output.get();
 		return newOutput;
 	}
 
 	public synchronized String getNewError() {
 		// Get only the new text that has not already been displayed:
-		String newError = error.replaceFirst(Pattern.quote(
+		String newError = error.get().replaceFirst(Pattern.quote(
 			this.alreadyDisplayedError), "");
-		this.alreadyDisplayedError = error;
+		this.alreadyDisplayedError = error.get();
 		return newError;
 	}
 

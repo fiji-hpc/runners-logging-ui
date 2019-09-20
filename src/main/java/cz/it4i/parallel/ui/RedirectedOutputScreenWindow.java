@@ -14,6 +14,7 @@ import javafx.stage.WindowEvent;
 @Plugin(type = Command.class,
 	menuPath = "Plugins>Scijava parallel>Redirected Output Viewer")
 public class RedirectedOutputScreenWindow implements Command {
+
 	private Window owner = null;
 
 	private Stage stage;
@@ -31,9 +32,8 @@ public class RedirectedOutputScreenWindow implements Command {
 		final Scene formScene = new Scene(this.controller);
 		stage = new Stage();
 		// This window should not be modal:
-
 		stage.initModality(Modality.NONE);
-		stage.setResizable(false);
+		stage.setResizable(true);
 		stage.setTitle("Redirected Output");
 		stage.setScene(formScene);
 		stage.initOwner(owner);
