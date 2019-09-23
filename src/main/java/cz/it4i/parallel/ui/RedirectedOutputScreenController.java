@@ -33,18 +33,18 @@ public class RedirectedOutputScreenController extends AnchorPane {
 		errorTextArea.setEditable(false);
 	}
 
-	private void updateOutputAndErrorPeriodically() {
+	private synchronized void updateOutputAndErrorPeriodically() {
 		Runnable updateStandardOutputAndErrorsRunnable = () -> {
 			JavaFXRoutines.runOnFxThread(() -> {
 				// Append any new output:
 				String newOutput = redirectedOutput.getNewOutput();
-				if (!newOutput.equals("")) {
+				if (!newOutput.isEmpty()) {
 					outputTextArea.appendText(newOutput);
 				}
 
 				// Append any new error:
 				String newError = redirectedOutput.getNewError();
-				if (!newError.equals("")) {
+				if (!newError.isEmpty()) {
 					errorTextArea.appendText(newError);
 				}
 

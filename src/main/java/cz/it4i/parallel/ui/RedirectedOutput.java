@@ -1,7 +1,7 @@
 
 package cz.it4i.parallel.ui;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
 public class RedirectedOutput {
@@ -11,9 +11,11 @@ public class RedirectedOutput {
 			OUTPUT, ERROR
 	}
 
-	private static AtomicReference<String> output = new AtomicReference<>("Start of output redirection.\n");
+	private static ReentrantLock lock = new ReentrantLock();
 
-	private static AtomicReference<String> error = new AtomicReference<>("Start of error redirection.\n");
+	private static String output = "Start of output redirection.\n";
+
+	private static String error = "Start of error redirection.\n";
 
 	private String alreadyDisplayedOutput;
 
@@ -24,40 +26,36 @@ public class RedirectedOutput {
 		this.alreadyDisplayedError = "";
 	}
 
-	public static synchronized void appendTo(StreamType streamType,
-		byte[] buffer)
+	public static void appendTo(StreamType streamType, byte[] buffer,
+		int length)
 	{
+		lock.lock();
 		if (streamType == StreamType.OUTPUT) {
-			output.set(output.get() + new String(buffer));
+			output += new String(buffer, 0, length);
 		}
 		else {
-			error.set(error.get() + new String(buffer));
+			error += new String(buffer, 0, length);
 		}
+		lock.unlock();
 	}
 
-	// Get all output:
-	public static synchronized String getOutput() {
-		return output.get();
-	}
-
-	// Get all error:
-	public static synchronized String getError() {
-		return error.get();
-	}
-
-	public synchronized String getNewOutput() {
+	public String getNewOutput() {
+		lock.lock();
 		// Get only the new text that has not already been displayed:
-		String newOutput = output.get().replaceFirst(Pattern.quote(
+		String newOutput = output.replaceFirst(Pattern.quote(
 			this.alreadyDisplayedOutput), "");
-		this.alreadyDisplayedOutput = output.get();
+		this.alreadyDisplayedOutput = output;
+		lock.unlock();
 		return newOutput;
 	}
 
-	public synchronized String getNewError() {
+	public String getNewError() {
+		lock.lock();
 		// Get only the new text that has not already been displayed:
-		String newError = error.get().replaceFirst(Pattern.quote(
+		String newError = error.replaceFirst(Pattern.quote(
 			this.alreadyDisplayedError), "");
-		this.alreadyDisplayedError = error.get();
+		this.alreadyDisplayedError = error;
+		lock.unlock();
 		return newError;
 	}
 
