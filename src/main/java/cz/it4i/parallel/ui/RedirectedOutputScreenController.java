@@ -1,14 +1,13 @@
 
 package cz.it4i.parallel.ui;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
+import cz.it4i.parallel.ui.EventMessage.StreamType;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+
+import com.google.common.eventbus.Subscribe;
 
 public class RedirectedOutputScreenController extends AnchorPane {
 
@@ -18,14 +17,9 @@ public class RedirectedOutputScreenController extends AnchorPane {
 	@FXML
 	TextArea errorTextArea;
 
-	private ScheduledExecutorService executor;
-
-	private RedirectedOutput redirectedOutput;
-
 	public RedirectedOutputScreenController() {
 		JavaFXRoutines.initRootAndController("redirected-output-screen.fxml", this);
-		redirectedOutput = new RedirectedOutput();
-		updateOutputAndErrorPeriodically();
+		RedirectedOutput.eventBus.register(this);
 	}
 
 	public void initialize() {
@@ -33,30 +27,17 @@ public class RedirectedOutputScreenController extends AnchorPane {
 		errorTextArea.setEditable(false);
 	}
 
-	private synchronized void updateOutputAndErrorPeriodically() {
-		Runnable updateStandardOutputAndErrorsRunnable = () -> {
-			JavaFXRoutines.runOnFxThread(() -> {
-				// Append any new output:
-				String newOutput = redirectedOutput.getNewOutput();
-				if (!newOutput.isEmpty()) {
-					outputTextArea.appendText(newOutput);
-				}
-
-				// Append any new error:
-				String newError = redirectedOutput.getNewError();
-				if (!newError.isEmpty()) {
-					errorTextArea.appendText(newError);
-				}
-
-			});
-		};
-
-		executor = Executors.newScheduledThreadPool(1);
-		executor.scheduleAtFixedRate(updateStandardOutputAndErrorsRunnable, 0, 3,
-			TimeUnit.SECONDS);
+	@Subscribe
+	public void handleEvent(final EventMessage eventMessage) {
+		if (eventMessage.getMsgcode() == StreamType.OUTPUT) {
+			outputTextArea.appendText(eventMessage.getMsg());
+		}
+		else {
+			errorTextArea.appendText(eventMessage.getMsg());
+		}
 	}
 
 	public void close() {
-		executor.shutdown();
+		RedirectedOutput.eventBus.unregister(this);
 	}
 }
