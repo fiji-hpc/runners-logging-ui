@@ -17,9 +17,13 @@ public class RedirectedOutputScreenController extends AnchorPane {
 	@FXML
 	TextArea errorTextArea;
 
+	private RedirectedOutputService redirectedOutput;
+
 	public RedirectedOutputScreenController() {
 		JavaFXRoutines.initRootAndController("redirected-output-screen.fxml", this);
-		RedirectedOutput.eventBus.register(this);
+		redirectedOutput = RedirectedOutputImpl.getInstance();
+		redirectedOutput.post(new FeedbackMessage());
+		redirectedOutput.register(this);
 	}
 
 	public void initialize() {
@@ -38,6 +42,6 @@ public class RedirectedOutputScreenController extends AnchorPane {
 	}
 
 	public void close() {
-		RedirectedOutput.eventBus.unregister(this);
+		redirectedOutput.unregister(this);
 	}
 }
