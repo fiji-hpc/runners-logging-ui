@@ -67,6 +67,10 @@ public class RedirectedOutputScreenWindow implements Command {
 				"There can be only one redirected ouput window open."));
 		}
 	}
+	
+	public boolean windowIsAlreadyOpen() {
+		return aWindowIsAlreadyOpen.get();
+	}
 
 	private void finalizeOnStageClose() {
 		// On close dispose executor:
