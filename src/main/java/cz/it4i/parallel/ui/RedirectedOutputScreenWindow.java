@@ -5,6 +5,7 @@ import org.scijava.command.Command;
 import org.scijava.plugin.Plugin;
 
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
+import cz.it4i.swing_javafx_ui.SimpleDialog;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -20,6 +21,8 @@ public class RedirectedOutputScreenWindow implements Command {
 	private Stage stage;
 
 	private RedirectedOutputScreenController controller;
+
+	private static boolean aWindowIsAlreadyOpen = false;
 
 	public void setOwner(Window parentWindow) {
 		this.owner = parentWindow;
@@ -49,14 +52,25 @@ public class RedirectedOutputScreenWindow implements Command {
 
 	@Override
 	public void run() {
-		RedirectedOutputScreenWindow redirectedOutputScreenWindow =
-			new RedirectedOutputScreenWindow();
-		JavaFXRoutines.runOnFxThread(redirectedOutputScreenWindow::openWindow);
+		if (!aWindowIsAlreadyOpen) {
+			RedirectedOutputScreenWindow redirectedOutputScreenWindow =
+				new RedirectedOutputScreenWindow();
+			JavaFXRoutines.runOnFxThread(redirectedOutputScreenWindow::openWindow);
+			aWindowIsAlreadyOpen = true;
+		}
+		else {
+			JavaFXRoutines.runOnFxThread(() -> SimpleDialog.showInformation(
+				"A redirected output window is already open!",
+				"There can be only one redirected ouput window open."));
+		}
 	}
 
 	private void finalizeOnStageClose() {
 		// On close dispose executor:
-		this.stage.setOnCloseRequest((WindowEvent we) -> this.controller.close());
+		this.stage.setOnCloseRequest((WindowEvent we) -> {
+			this.controller.close();
+			aWindowIsAlreadyOpen = false;
+		});
 
 	}
 }
