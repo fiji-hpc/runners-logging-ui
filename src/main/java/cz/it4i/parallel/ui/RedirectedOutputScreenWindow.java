@@ -1,6 +1,8 @@
 
 package cz.it4i.parallel.ui;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.scijava.command.Command;
 import org.scijava.plugin.Plugin;
 
@@ -22,7 +24,8 @@ public class RedirectedOutputScreenWindow implements Command {
 
 	private RedirectedOutputScreenController controller;
 
-	private static boolean aWindowIsAlreadyOpen = false;
+	private static AtomicReference<Boolean> aWindowIsAlreadyOpen =
+		new AtomicReference<>(false);
 
 	public void setOwner(Window parentWindow) {
 		this.owner = parentWindow;
@@ -52,11 +55,11 @@ public class RedirectedOutputScreenWindow implements Command {
 
 	@Override
 	public void run() {
-		if (!aWindowIsAlreadyOpen) {
+		if (!aWindowIsAlreadyOpen.get()) {
 			RedirectedOutputScreenWindow redirectedOutputScreenWindow =
 				new RedirectedOutputScreenWindow();
 			JavaFXRoutines.runOnFxThread(redirectedOutputScreenWindow::openWindow);
-			aWindowIsAlreadyOpen = true;
+			aWindowIsAlreadyOpen.set(true);
 		}
 		else {
 			JavaFXRoutines.runOnFxThread(() -> SimpleDialog.showInformation(
@@ -69,7 +72,7 @@ public class RedirectedOutputScreenWindow implements Command {
 		// On close dispose executor:
 		this.stage.setOnCloseRequest((WindowEvent we) -> {
 			this.controller.close();
-			aWindowIsAlreadyOpen = false;
+			aWindowIsAlreadyOpen.set(false);
 		});
 
 	}
