@@ -9,7 +9,7 @@
 		<version>27.0.1</version>
 		<relativePath />
 	</parent>
-	<artifactId>scijava-parallel-runners-logging-ui</artifactId>
+	<artifactId>runners-logging-ui</artifactId>
 	<version>0.0.1-RC-1</version>
 	<name>Enhanced loggin for runners</name>
 	<description>Parallelization framework for SciJava applications.</description>
