@@ -16,8 +16,6 @@ import org.scijava.service.Service;
 
 import cz.it4i.parallel.runners.BaseRedirectingOutputService;
 import cz.it4i.parallel.runners.OutputSource;
-import cz.it4i.parallel.ui.EventMessage;
-import cz.it4i.parallel.ui.FeedbackMessage;
 
 @Plugin(type = Service.class)
 public class LogWindowRedirectingOutputService extends
