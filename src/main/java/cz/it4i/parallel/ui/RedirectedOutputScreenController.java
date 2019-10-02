@@ -1,13 +1,13 @@
 
 package cz.it4i.parallel.ui;
 
-import cz.it4i.parallel.ui.EventMessage.StreamType;
+import com.google.common.eventbus.Subscribe;
+
+import cz.it4i.parallel.runners.RedirectingOutputService.OutputType;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-
-import com.google.common.eventbus.Subscribe;
 
 public class RedirectedOutputScreenController extends AnchorPane {
 
@@ -19,11 +19,14 @@ public class RedirectedOutputScreenController extends AnchorPane {
 
 	private RedirectedOutputService redirectedOutput;
 
-	public RedirectedOutputScreenController() {
+
+	public RedirectedOutputScreenController(
+		RedirectedOutputService redirectedOutput)
+	{
+		this.redirectedOutput = redirectedOutput;
 		JavaFXRoutines.initRootAndController("redirected-output-screen.fxml", this);
-		redirectedOutput = RedirectedOutputImpl.getInstance();
-		redirectedOutput.post(new FeedbackMessage());
 		redirectedOutput.register(this);
+		redirectedOutput.post(new FeedbackMessage());
 	}
 
 	public void initialize() {
@@ -33,7 +36,7 @@ public class RedirectedOutputScreenController extends AnchorPane {
 
 	@Subscribe
 	public void handleEvent(final EventMessage eventMessage) {
-		if (eventMessage.getMsgcode() == StreamType.OUTPUT) {
+		if (eventMessage.getMsgcode() == OutputType.OUTPUT) {
 			outputTextArea.appendText(eventMessage.getMsg());
 		}
 		else {

@@ -4,8 +4,10 @@ package cz.it4i.parallel.ui;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.scijava.command.Command;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import cz.it4i.parallel.runners.RedirectingOutputService;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import cz.it4i.swing_javafx_ui.SimpleDialog;
 import javafx.scene.Scene;
@@ -17,6 +19,9 @@ import javafx.stage.WindowEvent;
 @Plugin(type = Command.class,
 	menuPath = "Plugins>Scijava parallel>Redirected Output Viewer")
 public class RedirectedOutputScreenWindow implements Command {
+
+	@Parameter
+	private RedirectingOutputService redirectingOutputService;
 
 	private Window owner = null;
 
@@ -33,7 +38,8 @@ public class RedirectedOutputScreenWindow implements Command {
 
 	public void openWindow() {
 		// Create controller:
-		this.controller = new RedirectedOutputScreenController();
+		this.controller = new RedirectedOutputScreenController(
+			(RedirectedOutputService) redirectingOutputService);
 
 		final Scene formScene = new Scene(this.controller);
 		stage = new Stage();
@@ -55,9 +61,15 @@ public class RedirectedOutputScreenWindow implements Command {
 
 	@Override
 	public void run() {
+		if (!(redirectingOutputService instanceof RedirectedOutputService)) {
+			JavaFXRoutines.runOnFxThread(() -> SimpleDialog.showWarning(
+				"Cannot open",
+				"There is registered another type RedirectingOutputService!"));
+		}
 		if (!aWindowIsAlreadyOpen.get()) {
 			RedirectedOutputScreenWindow redirectedOutputScreenWindow =
 				new RedirectedOutputScreenWindow();
+			redirectingOutputService.context().inject(redirectedOutputScreenWindow);
 			JavaFXRoutines.runOnFxThread(redirectedOutputScreenWindow::openWindow);
 			aWindowIsAlreadyOpen.set(true);
 		}
