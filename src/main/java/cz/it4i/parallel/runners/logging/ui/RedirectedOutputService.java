@@ -1,5 +1,5 @@
 
-package cz.it4i.parallel.ui;
+package cz.it4i.parallel.runners.logging.ui;
 
 public interface RedirectedOutputService {
 

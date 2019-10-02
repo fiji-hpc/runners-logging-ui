@@ -5,7 +5,7 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE', which is part of this project.
  ******************************************************************************/
-package cz.it4i.parallel.ui;
+package cz.it4i.parallel.runners.logging.ui;
 
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
@@ -16,6 +16,8 @@ import org.scijava.service.Service;
 
 import cz.it4i.parallel.runners.BaseRedirectingOutputService;
 import cz.it4i.parallel.runners.OutputSource;
+import cz.it4i.parallel.ui.EventMessage;
+import cz.it4i.parallel.ui.FeedbackMessage;
 
 @Plugin(type = Service.class)
 public class LogWindowRedirectingOutputService extends
