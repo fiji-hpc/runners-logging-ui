@@ -92,11 +92,8 @@ public class LogWindowRedirectingOutputService extends
 		 */
 		@Subscribe
 		public void handleListening(FeedbackMessage message) {
-			if (message.getWindowIsOpen()) {
-				outputSources.forEach(s -> s.statusOfOutputChanged(true));
-			} else {
-				outputSources.forEach(s -> s.statusOfOutputChanged(false));
-			}
+			outputSources.forEach(s -> s.statusOfOutputChanged(message
+				.getWindowIsOpen()));
 		}
 
 	}
