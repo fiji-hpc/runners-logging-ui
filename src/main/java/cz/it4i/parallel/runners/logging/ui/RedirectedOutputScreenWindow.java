@@ -56,7 +56,7 @@ public class RedirectedOutputScreenWindow implements Command {
 		// stage:
 		finalizeOnStageClose();
 
-		stage.showAndWait();
+		stage.show();
 	}
 
 	@Override
