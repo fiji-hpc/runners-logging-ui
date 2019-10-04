@@ -26,7 +26,7 @@ public class RedirectedOutputScreenController extends AnchorPane {
 		this.redirectedOutput = redirectedOutput;
 		JavaFXRoutines.initRootAndController("redirected-output-screen.fxml", this);
 		redirectedOutput.register(this);
-		redirectedOutput.post(new FeedbackMessage());
+		redirectedOutput.post(new FeedbackMessage(true));
 	}
 
 	public void initialize() {
@@ -45,6 +45,7 @@ public class RedirectedOutputScreenController extends AnchorPane {
 	}
 
 	public void close() {
+		redirectedOutput.post(new FeedbackMessage(false));
 		redirectedOutput.unregister(this);
 	}
 }

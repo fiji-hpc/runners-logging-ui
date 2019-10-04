@@ -5,6 +5,7 @@
  * This file is subject to the terms and conditions defined in
  * file 'LICENSE', which is part of this project.
  ******************************************************************************/
+
 package cz.it4i.parallel.runners.logging.ui;
 
 import com.google.common.eventbus.DeadEvent;
@@ -21,7 +22,6 @@ import cz.it4i.parallel.runners.OutputSource;
 public class LogWindowRedirectingOutputService extends
 	BaseRedirectingOutputService implements RedirectedOutputService
 {
-
 
 	private EventBus eventBus = new EventBus("redirectedOutputBus");
 
@@ -92,7 +92,11 @@ public class LogWindowRedirectingOutputService extends
 		 */
 		@Subscribe
 		public void handleListening(FeedbackMessage message) {
-			outputSources.forEach(s -> s.statusOfOutputChanged(true));
+			if (message.getWindowIsOpen()) {
+				outputSources.forEach(s -> s.statusOfOutputChanged(true));
+			} else {
+				outputSources.forEach(s -> s.statusOfOutputChanged(false));
+			}
 		}
 
 	}
