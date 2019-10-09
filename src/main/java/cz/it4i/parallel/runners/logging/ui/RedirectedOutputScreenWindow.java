@@ -7,7 +7,7 @@ import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import cz.it4i.parallel.runners.RedirectingOutputService;
+import cz.it4i.parallel.paradigm_managers.RedirectingOutputService;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import cz.it4i.swing_javafx_ui.SimpleDialog;
 import javafx.scene.Scene;

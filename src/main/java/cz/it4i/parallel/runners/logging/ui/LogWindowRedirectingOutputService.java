@@ -15,8 +15,8 @@ import com.google.common.eventbus.Subscribe;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
 
-import cz.it4i.parallel.runners.BaseRedirectingOutputService;
-import cz.it4i.parallel.runners.OutputSource;
+import cz.it4i.parallel.paradigm_managers.BaseRedirectingOutputService;
+import cz.it4i.parallel.paradigm_managers.OutputSource;
 
 @Plugin(type = Service.class)
 public class LogWindowRedirectingOutputService extends
