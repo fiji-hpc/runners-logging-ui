@@ -10,6 +10,7 @@ import org.scijava.plugin.Plugin;
 import cz.it4i.parallel.paradigm_managers.RedirectingOutputService;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import cz.it4i.swing_javafx_ui.SimpleDialog;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,6 +37,10 @@ public class RedirectedOutputScreenWindow implements Command {
 		this.owner = parentWindow;
 	}
 
+	public RedirectedOutputScreenWindow() {
+		Platform.setImplicitExit(false);
+	}
+	
 	public void openWindow() {
 		// Create controller:
 		this.controller = new RedirectedOutputScreenController(
