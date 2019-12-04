@@ -90,7 +90,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.scijava</groupId>
+			<groupId>cz.it4i.fiji</groupId>
 			<artifactId>cluster-job-launcher</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
