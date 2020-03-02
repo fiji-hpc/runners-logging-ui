@@ -3,7 +3,7 @@ package cz.it4i.parallel.runners.logging.ui;
 
 import com.google.common.eventbus.Subscribe;
 
-import cz.it4i.cluster_job_launcher.RedirectingOutputService.OutputType;
+import cz.it4i.parallel.runners.logging.ui.RedirectingOutputService.OutputType;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;

@@ -15,9 +15,6 @@ import com.google.common.eventbus.Subscribe;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
 
-import cz.it4i.cluster_job_launcher.BaseRedirectingOutputService;
-import cz.it4i.cluster_job_launcher.OutputSource;
-
 @Plugin(type = Service.class)
 public class LogWindowRedirectingOutputService extends
 	BaseRedirectingOutputService implements RedirectedOutputService

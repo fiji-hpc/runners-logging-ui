@@ -1,7 +1,7 @@
 
 package cz.it4i.parallel.runners.logging.ui;
 
-import cz.it4i.cluster_job_launcher.RedirectingOutputService.OutputType;
+import cz.it4i.parallel.runners.logging.ui.RedirectingOutputService.OutputType;
 
 public class EventMessage {
 

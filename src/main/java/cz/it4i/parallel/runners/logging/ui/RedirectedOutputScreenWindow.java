@@ -7,7 +7,6 @@ import org.scijava.command.Command;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
-import cz.it4i.cluster_job_launcher.RedirectingOutputService;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import cz.it4i.swing_javafx_ui.SimpleDialog;
 import javafx.application.Platform;
@@ -40,7 +39,7 @@ public class RedirectedOutputScreenWindow implements Command {
 	public RedirectedOutputScreenWindow() {
 		Platform.setImplicitExit(false);
 	}
-	
+
 	public void openWindow() {
 		// Create controller:
 		this.controller = new RedirectedOutputScreenController(
@@ -67,8 +66,7 @@ public class RedirectedOutputScreenWindow implements Command {
 	@Override
 	public void run() {
 		if (!(redirectingOutputService instanceof RedirectedOutputService)) {
-			JavaFXRoutines.runOnFxThread(() -> SimpleDialog.showWarning(
-				"Cannot open",
+			JavaFXRoutines.runOnFxThread(() -> SimpleDialog.showWarning("Cannot open",
 				"There is registered another type RedirectingOutputService!"));
 		}
 		if (!aWindowIsAlreadyOpen.get()) {
@@ -84,7 +82,7 @@ public class RedirectedOutputScreenWindow implements Command {
 				"There can be only one redirected ouput window open."));
 		}
 	}
-	
+
 	public boolean windowIsAlreadyOpen() {
 		return aWindowIsAlreadyOpen.get();
 	}

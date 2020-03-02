@@ -9,9 +9,10 @@
 		<version>27.0.1</version>
 		<relativePath />
 	</parent>
+	<groupId>cz.it4i.fiji</groupId>
 	<artifactId>runners-logging-ui</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
-	<name>Enhanced loggin for runners</name>
+	<version>0.0.4-SNAPSHOT</version>
+	<name>Enhanced logging for paradigm runners.</name>
 	<description>Parallelization framework for SciJava applications.</description>
 	<url>https://imagej.net/Scijava-parallel</url>
 	<inceptionYear>2019</inceptionYear>
@@ -112,11 +113,13 @@
 	</repositories>
 
 	<dependencies>
+
+		<!-- SciJava dependencies -->
 		<dependency>
-			<groupId>cz.it4i.fiji</groupId>
-			<artifactId>cluster-job-launcher</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.scijava</groupId>
+			<artifactId>scijava-common</artifactId>
 		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -128,12 +131,14 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
 		<dependency>
 			<groupId>it4i-fiji</groupId>
 			<artifactId>swing-javafx-ui</artifactId>
