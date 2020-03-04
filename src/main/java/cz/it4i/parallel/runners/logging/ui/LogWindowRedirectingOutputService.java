@@ -35,8 +35,13 @@ public class LogWindowRedirectingOutputService extends
 	}
 
 	@Override
+	public void writeOutput(String output, OutputType outputType, String jobId) {
+		eventBus.post(new EventMessage(outputType, output, jobId));
+	}
+
+	@Override
 	public void writeOutput(String output, OutputType outputType) {
-		eventBus.post(new EventMessage(outputType, output));
+		eventBus.post(new EventMessage(outputType, output, "Single Job"));
 	}
 
 	@Override

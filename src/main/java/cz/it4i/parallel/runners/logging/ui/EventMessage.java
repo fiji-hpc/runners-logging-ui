@@ -12,11 +12,12 @@ public class EventMessage {
 
 	private final OutputType msgcode;
 	private final String msg;
+	private final String jobId;
 
-	public EventMessage(OutputType msgcode, String msg) {
-
+	public EventMessage(OutputType msgcode, String msg, String jobId) {
 		this.msgcode = msgcode;
 		this.msg = msg;
+		this.jobId = jobId;
 	}
 
 	public OutputType getMsgcode() {
@@ -25,5 +26,9 @@ public class EventMessage {
 
 	public String getMsg() {
 		return msg;
+	}
+
+	public String getJobId() {
+		return jobId;
 	}
 }

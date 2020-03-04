@@ -15,6 +15,8 @@ public interface RedirectingOutputService extends SciJavaService {
 			OUTPUT, ERROR
 	}
 
+	void writeOutput(String output, OutputType outputType, String jobId);
+	
 	void writeOutput(String output, OutputType outputType);
 
 	void registerOutputSource(OutputSource outputSource);
