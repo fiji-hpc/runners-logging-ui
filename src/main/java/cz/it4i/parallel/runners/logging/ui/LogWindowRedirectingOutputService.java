@@ -12,10 +12,11 @@ import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import org.scijava.Priority;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.Service;
 
-@Plugin(type = Service.class)
+@Plugin(type = Service.class, priority = Priority.HIGH)
 public class LogWindowRedirectingOutputService extends
 	BaseRedirectingOutputService implements RedirectedOutputService
 {
