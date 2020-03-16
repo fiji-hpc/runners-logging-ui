@@ -1,13 +1,25 @@
-/*******************************************************************************
- * IT4Innovations - National Supercomputing Center
- * Copyright (c) 2017 - 2019 All Right Reserved, https://www.it4i.cz
- *
- * This file is subject to the terms and conditions defined in
- * file 'LICENSE', which is part of this project.
- ******************************************************************************/
+
 package cz.it4i.parallel.runners.logging.ui;
 
-public interface OutputSource {
+import java.util.function.Consumer;
 
-	void statusOfOutputChanged(boolean isListening);
+public class OutputSource {
+
+	private String jobId = "Single Job";
+
+	private Consumer<Boolean> method;
+
+	public OutputSource(String jobId, Consumer<Boolean> method) {
+		this.jobId = jobId;
+		this.method = method;
+	}
+
+	public void statusOfOutputChanged(boolean windowIsOpen) {
+		method.accept(windowIsOpen);
+	}
+
+	public String getJobId() {
+		return this.jobId;
+	}
+
 }

@@ -83,20 +83,34 @@ public class LogWindowRedirectingOutputService extends
 		}
 
 		/**
-		 * @param deadEvent - internally not used
+		 * @param deadEvent - The parameter is intentionally not used.
 		 */
 		@Subscribe
 		public void handleNotListening(DeadEvent deadEvent) {
-			outputSources.forEach(s -> s.statusOfOutputChanged(false));
+			outputSources.forEach(outputsource -> outputsource.statusOfOutputChanged(
+				false));
 		}
 
 		/**
-		 * @param message - internally not used
+		 * @param message - The parameter is intentionally not used.
 		 */
 		@Subscribe
 		public void handleListening(FeedbackMessage message) {
-			outputSources.forEach(s -> s.statusOfOutputChanged(message
-				.getWindowIsOpen()));
+			outputSources.forEach(outputsource -> {
+				if (message.getJobId().equals(outputsource.getJobId())) {
+					System.out.println("Job id: " + message.getJobId() + " isOpen = " +
+						message.getWindowIsOpen());
+					outputsource.statusOfOutputChanged(message.getWindowIsOpen());
+				}
+			});
+			if (message.getWindowIsOpen()) {
+				System.out.println(" Start publishing for job id: " + message
+					.getJobId());
+			}
+			else {
+				System.out.println(" Stop publishing for job id: " + message
+					.getJobId());
+			}
 		}
 
 	}
