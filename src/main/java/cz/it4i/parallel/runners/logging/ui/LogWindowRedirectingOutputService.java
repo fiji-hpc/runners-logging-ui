@@ -98,19 +98,9 @@ public class LogWindowRedirectingOutputService extends
 		public void handleListening(FeedbackMessage message) {
 			outputSources.forEach(outputsource -> {
 				if (message.getJobId().equals(outputsource.getJobId())) {
-					System.out.println("Job id: " + message.getJobId() + " isOpen = " +
-						message.getWindowIsOpen());
 					outputsource.statusOfOutputChanged(message.getWindowIsOpen());
 				}
 			});
-			if (message.getWindowIsOpen()) {
-				System.out.println(" Start publishing for job id: " + message
-					.getJobId());
-			}
-			else {
-				System.out.println(" Stop publishing for job id: " + message
-					.getJobId());
-			}
 		}
 
 	}
