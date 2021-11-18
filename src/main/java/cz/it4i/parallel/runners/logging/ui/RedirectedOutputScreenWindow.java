@@ -17,7 +17,7 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 @Plugin(type = Command.class,
-	menuPath = "Plugins>Scijava parallel>Redirected Output Viewer")
+	menuPath = "Plugins>HPC-ParallelTools>Redirected Output Viewer")
 public class RedirectedOutputScreenWindow implements Command {
 
 	@Parameter
